@@ -1,0 +1,83 @@
+﻿@{
+    Layout = null;
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ZYX_WEB</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ZYX_WEB.styles.css" asp-append-version="true" />
+</head>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<form>
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form2Example1" style="text-transform:uppercase">Email address</label>
+        <input type="email" class="form-control" style="text-transform:uppercase" id="txtusername" />
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+        <label class="form-label" for="form2Example2">Password</label>
+        <input type="password"  class="form-control" id="txtcontrasenia" />
+    </div>
+
+
+    <!-- Submit button -->
+    <button type="button" class="btn btn-primary btn-block mb-4" onclick="login()">Sign in</button>
+
+
+</form>
+
+
+<script>
+
+    const username = $('#txtusername');
+    const contrasenia = $('#txtcontrasenia');
+
+    function login() {
+
+        const credentials = {
+            Usuario: username.val(),
+            Contrasena: contrasenia.val()
+        };
+
+        fetch('http://localhost:5085/Login/auth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error');
+                }
+                return response.json();
+            })
+            .then(data => {
+
+                const token = data.Token;
+                localStorage.setItem('token', token);
+                // localStorage.setItem('correo', correo);
+                // localStorage.setItem('id_rol', id_rol);
+
+                var url = '@Html.Raw(Url.Action("Pedidos", "Home"))';
+                window.location.href = url;
+
+
+            })
+            .catch(error => {
+                alert('Error de login. Por favor, verifica tus credenciales.');
+            });
+
+      
+    }
+
+</script>

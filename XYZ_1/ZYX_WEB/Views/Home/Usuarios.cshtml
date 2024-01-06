@@ -1,0 +1,142 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<select id="cboRoles" class="form-select" aria-label="Default select example">
+	<option value="0">TODOS</option>
+	<option value="1">ENCARGADO</option>
+	<option value="2">VENDEDOR</option>
+	<option value="3">DELIVERY</option>
+	<option value="3">REPARTIDOR</option>
+</select>
+
+
+
+<table id="tblusuarios" class="table table-striped" style="width:100%">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Código</th>
+			<th>Nombre</th>
+			<th>Correo Electrónico</th>
+			<th>Teléfono</th>
+			<th>Puesto</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody id="tblusuariosbody">
+	</tbody>
+</table>
+
+
+<script src="~/js/datatable/jquery.dataTables.js"></script>
+<script src="~/js/datatable/dataTables.bootstrap.js"></script>
+<script src="~/js/datatable/dataTables.tableTools.js"></script>
+<script src="~/js/datatable/datatables-init.js"></script>
+
+<script>
+
+
+	let dataTable;
+	let dataTableIsInitialized = false;
+	const token = localStorage.getItem('token');
+	const cboRoles = $('#cboRoles')
+
+	const dataTableOptions = {
+		destroy: true,
+		language: {
+			paginate: {
+				first: "Primero",
+				last: "Último",
+				next: "Siguiente",
+				previous: "Anterior"
+			}
+		}
+	};
+
+	const initDataTable = async () => {
+		if (dataTableIsInitialized) {
+			dataTable.destroy();
+		}
+
+		await listUsers();
+
+	
+		dataTable = $("#tblusuarios").DataTable(dataTableOptions);
+
+		dataTableIsInitialized = true;
+	};
+
+
+	const parametros = {
+		id_rol: cboRoles.val()
+	};
+
+
+	console.log(parametros)
+	console.log(cboRoles.val())
+
+	const listUsers = async () => {
+		try {
+
+			const response = await fetch("http://localhost:5085/Usuarios/listarusuarios", {
+				method: 'POST', // o 'POST' según lo que necesites
+				headers: {
+					'Authorization': `Bearer ${token}`, // Agrega el token al encabezado 'Authorization'
+					'Content-Type': 'application/json' // Si es necesario especificar el tipo de contenido
+				},
+				body: JSON.stringify(parametros)
+			});
+
+			if (!response.ok) {
+				throw new Error(`Error en la solicitud: ${response.statusText}`);
+			}
+
+			const users = await response.json();
+
+			let content = ``;
+			users.forEach((user, index) => {
+				content += `
+						<tr>
+							<td>${index + 1}</td>
+								<td>${user.cod_trabajador}</td>
+								<td>${user.nombre}</td>
+								<td>${user.correo}</td>
+								<td>${user.telefono}</td>
+								<td>${user.puesto}</td>
+							<td><i class="fa-solid fa-check" style="color: green;"></i></td>
+							<td>
+								<button class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></button>
+								<button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+							</td>
+						</tr>`;
+			});
+			$('#tblusuariosbody').html(content);
+
+
+		} catch (ex) {
+			alert(ex);
+		}
+	};
+
+
+	cboRoles.on('change', async () => {
+		parametros.id_rol = cboRoles.val();
+		await initDataTable();
+	});
+
+	window.addEventListener("load", async () => {
+		await initDataTable();
+	});
+
+
+</script>

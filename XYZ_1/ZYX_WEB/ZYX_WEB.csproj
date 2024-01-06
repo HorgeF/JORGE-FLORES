@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\datatable\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\datatable\datatables-init.js" />
+    <None Include="wwwroot\js\datatable\dataTables.bootstrap.js" />
+    <None Include="wwwroot\js\datatable\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\js\datatable\dataTables.bootstrap.min.js.map" />
+    <None Include="wwwroot\js\datatable\dataTables.tableTools.js" />
+    <None Include="wwwroot\js\datatable\dataTables.tableTools.min.js" />
+    <None Include="wwwroot\js\datatable\dataTables.tableTools.min.js.map" />
+    <None Include="wwwroot\js\datatable\jquery.dataTables.js" />
+    <None Include="wwwroot\js\datatable\jquery.dataTables.min.js" />
+    <None Include="wwwroot\js\datatable\jquery.dataTables.min.js.map" />
+    <None Include="wwwroot\js\datatable\ZeroClipboard.js" />
+  </ItemGroup>
+
+</Project>

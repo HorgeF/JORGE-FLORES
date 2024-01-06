@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "back", "back", "{7D23FB15-31E8-46B3-AD5D-7AEDE8742E05}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "front", "front", "{FF589FA5-75F4-4E32-95AF-BDFA0F2B39A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_2", "API_2\API_2.csproj", "{A72A7E51-2AC1-4F31-B8A4-A7186FC1EAD1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datos", "Datos\Datos.csproj", "{307DAC5B-C178-4A46-9FD7-A19052CC847C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidad", "Entidad\Entidad.csproj", "{D902FEA2-E433-4D4E-BB2B-0CE4E308D9CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Negocio", "Negocio\Negocio.csproj", "{E881A61A-2CCD-4A60-A523-D76A163C984E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZYX_WEB", "ZYX_WEB\ZYX_WEB.csproj", "{ACEF8348-7568-4A77-84B1-526011152C6F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A72A7E51-2AC1-4F31-B8A4-A7186FC1EAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72A7E51-2AC1-4F31-B8A4-A7186FC1EAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72A7E51-2AC1-4F31-B8A4-A7186FC1EAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72A7E51-2AC1-4F31-B8A4-A7186FC1EAD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{307DAC5B-C178-4A46-9FD7-A19052CC847C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{307DAC5B-C178-4A46-9FD7-A19052CC847C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{307DAC5B-C178-4A46-9FD7-A19052CC847C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{307DAC5B-C178-4A46-9FD7-A19052CC847C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D902FEA2-E433-4D4E-BB2B-0CE4E308D9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D902FEA2-E433-4D4E-BB2B-0CE4E308D9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D902FEA2-E433-4D4E-BB2B-0CE4E308D9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D902FEA2-E433-4D4E-BB2B-0CE4E308D9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E881A61A-2CCD-4A60-A523-D76A163C984E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E881A61A-2CCD-4A60-A523-D76A163C984E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E881A61A-2CCD-4A60-A523-D76A163C984E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E881A61A-2CCD-4A60-A523-D76A163C984E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACEF8348-7568-4A77-84B1-526011152C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACEF8348-7568-4A77-84B1-526011152C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACEF8348-7568-4A77-84B1-526011152C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACEF8348-7568-4A77-84B1-526011152C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A72A7E51-2AC1-4F31-B8A4-A7186FC1EAD1} = {7D23FB15-31E8-46B3-AD5D-7AEDE8742E05}
+		{307DAC5B-C178-4A46-9FD7-A19052CC847C} = {7D23FB15-31E8-46B3-AD5D-7AEDE8742E05}
+		{D902FEA2-E433-4D4E-BB2B-0CE4E308D9CC} = {7D23FB15-31E8-46B3-AD5D-7AEDE8742E05}
+		{E881A61A-2CCD-4A60-A523-D76A163C984E} = {7D23FB15-31E8-46B3-AD5D-7AEDE8742E05}
+		{ACEF8348-7568-4A77-84B1-526011152C6F} = {FF589FA5-75F4-4E32-95AF-BDFA0F2B39A8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA75AD5A-719E-43E7-A925-A74BEEF6EA9B}
+	EndGlobalSection
+EndGlobal
