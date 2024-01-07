@@ -71,7 +71,7 @@
 			dataTable.destroy();
 		}
 
-		await listUsers();
+		await listProd();
 
 
 		dataTable = $("#tblproductos").DataTable(dataTableOptions);
@@ -86,7 +86,8 @@
 	};
 
 
-	const listUsers = async () => {
+
+	const listProd = async () => {
 		try {
 
 			const response = await fetch("http://localhost:5085/Producto/listarproductos", {
@@ -122,6 +123,8 @@
 									</td>
 								</tr>`;
 			});
+
+
 			$('#tblproductosbody').html(content);
 
 
@@ -129,25 +132,6 @@
 			alert(ex);
 		}
 	};
-
-
-
-	// nombre.addEventListener('input', function () {
-	// 	// Acción a realizar cada vez que se escribe en el campo
-	// 	parametros.sku = ska.val()
-	// 	parametros.nombre = nombre.val()
-
-	// 	await initDataTable();
-	// });
-	
-	// sku.addEventListener('input', function () {
-	// 	// Acción a realizar cada vez que se escribe en el campo
-	// 	parametros.sku = ska.val()
-	// 	parametros.nombre = nombre.val()
-
-	// 	await initDataTable();
-	// });
-
 
 
 	window.addEventListener("load", async () => {

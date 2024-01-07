@@ -32,7 +32,11 @@ namespace ZYX_WEB.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+		public IActionResult NuevoPedido()
+		{
+			return View();
+		}
+		public IActionResult Privacy()
         {
             return View();
         }
@@ -42,5 +46,6 @@ namespace ZYX_WEB.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

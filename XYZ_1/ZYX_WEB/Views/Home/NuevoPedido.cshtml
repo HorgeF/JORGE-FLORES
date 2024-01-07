@@ -1,0 +1,126 @@
+﻿<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<form>
+    <div class="form-row">
+
+        <div class="form-group col-md-4">
+            <label for="inputState">Estado</label>
+            <select id="inputState" class="form-control" itemid="cboEstado">
+                <option value="1">Por Antender</option>
+                <option value="2">En Proceso</option>
+                <option value="3">Delivery</option>
+                <option value="4">Recibido</option>
+            </select>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Fecha Pedido</label>
+            <div class="input-group date" data-provide="datepicker" disabled>
+                <input type="text" class="form-control">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Fecha En Proceso</label>
+            <div class="input-group date" data-provide="datepicker" disabled>
+                <input type="text" class="form-control">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Fecha Delivery</label>
+            <div class="input-group date" data-provide="datepicker" disabled>
+                <input type="text" class="form-control">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Fecha Recibo</label>
+            <div class="input-group date" data-provide="datepicker" disabled>
+                <input type="text" class="form-control">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="inputState">Vendedor</label>
+            <select class="form-control" id="cboVendedor">
+                <option value="1">Vendedor 1</option>
+            </select>
+        </div>
+
+
+    </div>
+
+    <button type="button" class="btn btn-primary" id="btnGuardarCab" onclick="guardar()">Guardar</button>
+    <button type="button" class="btn btn-secundary"  onclick="location.href='@Url.Action("Pedido", "Home")'">Regresar</button>
+
+
+</form>
+
+
+
+<script>
+
+    const btnGuardarCab = $('#btnGuardarCab')
+    const cboVendedor = $('#cboVendedor')
+    const cboEstado = $('#cboEstado')
+    const token = localStorage.getItem('token');
+
+    const nuevaCab = {
+        accion: 1,
+        fecha_pedido : "",
+        id_vendedor: cboVendedor.val(),
+        id_estado: cboEstado.val(),
+        n_pedido : ""
+    };
+
+
+
+    async function guardar() {
+        try {
+            const response = await fetch("http://localhost:5085/Pedido/insertpedido", {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(nuevaCab)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error en la solicitud: ${response.statusText}. Detalles: ${JSON.stringify(errorData)}`);
+            }
+
+            const pedidos = await response.json();
+            console.log(pedidos);
+
+            var url = '@Html.Raw(Url.Action("Pedidos", "Home"))';
+            window.location.href = url;
+
+        } catch (ex) {
+            console.error(ex);
+        }
+    }
+
+    
+
+
+
+
+
+</script>
