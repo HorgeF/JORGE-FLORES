@@ -3,9 +3,12 @@
 <form>
     <div class="form-row">
 
+
+        <input type="text" class="form-control" id="txtestadoActual" hidden>
+
         <div class="form-group col-md-4">
             <label for="inputState">Estado</label>
-            <select id="inputState" class="form-control" itemid="cboEstado">
+            <select class="form-control" id="cboEstado" disabled>
                 <option value="1">Por Antender</option>
                 <option value="2">En Proceso</option>
                 <option value="3">Delivery</option>
@@ -16,8 +19,8 @@
 
         <div class="form-group col-md-6">
             <label for="inputEmail4">Fecha Pedido</label>
-            <div class="input-group date" data-provide="datepicker" disabled>
-                <input type="text" class="form-control">
+            <div class="input-group date" data-provide="datepicker" >
+                <input type="text" class="form-control" id="txtfechapedido" disabled >
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
                 </div>
@@ -25,9 +28,9 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Fecha En Proceso</label>
-            <div class="input-group date" data-provide="datepicker" disabled>
-                <input type="text" class="form-control">
+            <label for="inputEmail4">Fecha recepcion</label>
+            <div class="input-group date" data-provide="datepicker" >
+                <input type="text" class="form-control" id="txtfecharecepcion" disabled>
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
                 </div>
@@ -36,9 +39,9 @@
 
 
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Fecha Delivery</label>
-            <div class="input-group date" data-provide="datepicker" disabled>
-                <input type="text" class="form-control">
+            <label for="inputEmail4">Fecha despacho</label>
+            <div class="input-group date" data-provide="datepicker" >
+                <input type="text" class="form-control" id="txtfechadespacho" disabled>
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
                 </div>
@@ -46,9 +49,9 @@
         </div>
 
         <div class="form-group col-md-6">
-            <label for="inputEmail4">Fecha Recibo</label>
-            <div class="input-group date" data-provide="datepicker" disabled>
-                <input type="text" class="form-control">
+            <label for="inputEmail4">Fecha Entrega</label>
+            <div class="input-group date" data-provide="datepicker" >
+                <input type="text" class="form-control" id="txtfechaentrega" disabled>
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
                 </div>
@@ -66,7 +69,7 @@
     </div>
 
     <button type="button" class="btn btn-primary" id="btnGuardarCab" onclick="guardar()">Guardar</button>
-    <button type="button" class="btn btn-secundary"  onclick="location.href='@Url.Action("Pedido", "Home")'">Regresar</button>
+    <button type="button" class="btn btn-secundary"  onclick="location.href='@Url.Action("Pedidos", "Home")'">Regresar</button>
 
 
 </form>
@@ -78,7 +81,14 @@
     const btnGuardarCab = $('#btnGuardarCab')
     const cboVendedor = $('#cboVendedor')
     const cboEstado = $('#cboEstado')
+    const fechapedido = $('#txtfechapedido')
+    const estadoActual = $('#txtestadoActual')
     const token = localStorage.getItem('token');
+
+
+    var fechaActual = new Date().toLocaleDateString('es-ES');
+    fechapedido.val(fechaActual)
+
 
     const nuevaCab = {
         accion: 1,
