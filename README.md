@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [XYZ]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  Database [XYZ]    Script Date: 7/01/2024 00:57:04 ******/
 CREATE DATABASE [XYZ]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -82,7 +82,7 @@ ALTER DATABASE [XYZ] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLIC
 GO
 USE [XYZ]
 GO
-/****** Object:  Table [dbo].[ESTADOS]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  Table [dbo].[ESTADOS]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -92,7 +92,7 @@ CREATE TABLE [dbo].[ESTADOS](
 	[NOMBRE] [varchar](100) NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PEDIDOS_CAB]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  Table [dbo].[PEDIDOS_CAB]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -108,7 +108,7 @@ CREATE TABLE [dbo].[PEDIDOS_CAB](
 	[ID_ESTADO] [int] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PEDIDOS_DET]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  Table [dbo].[PEDIDOS_DET]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -120,7 +120,7 @@ CREATE TABLE [dbo].[PEDIDOS_DET](
 	[PRECIO] [decimal](18, 2) NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PRODUCTOS]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  Table [dbo].[PRODUCTOS]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -135,7 +135,7 @@ CREATE TABLE [dbo].[PRODUCTOS](
 	[UNI_MEDIDA] [varchar](300) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ROLES]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  Table [dbo].[ROLES]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -145,7 +145,7 @@ CREATE TABLE [dbo].[ROLES](
 	[DESCRIPCION] [varchar](300) NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[USUARIOS]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  Table [dbo].[USUARIOS]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -159,7 +159,7 @@ CREATE TABLE [dbo].[USUARIOS](
 	[ID_ROL] [int] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  StoredProcedure [dbo].[SP_GET_PEDIDOS]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  StoredProcedure [dbo].[SP_GET_PEDIDOS]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -175,7 +175,23 @@ BEGIN
     WHERE CAB.ID_PEDIDO = @ID_PEDIDO
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[SP_GET_USUARIO]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  StoredProcedure [dbo].[SP_GET_PEDIDOS_DET]    Script Date: 7/01/2024 00:57:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+--exec SP_GET_PEDIDOS 1
+CREATE PROCEDURE [dbo].[SP_GET_PEDIDOS_DET]
+    @ID_PEDIDO INT
+AS
+BEGIN
+SELECT DET.ID_PEDIDO , DET.ID_PEDIDO_DET  , PRO.NOMBRE , PRO.SKU , PRO.TIPO , PRO.PRECIO , PRO.UNI_MEDIDA FROM PEDIDOS_DET DET
+INNER JOIN PEDIDOS_CAB PE ON PE.ID_PEDIDO = DET.ID_PEDIDO
+INNER JOIN PRODUCTOS PRO ON PRO.ID_PRODUCTO = DET.ID_PRODUCTO
+WHERE PE.ID_PEDIDO = @ID_PEDIDO
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[SP_GET_USUARIO]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -196,7 +212,7 @@ ID_ROL
 FROM USUARIOS WHERE CORREO = @usuario and  COD_TRABAJADOR = @contrasenia
 
 GO
-/****** Object:  StoredProcedure [dbo].[SP_LISTAR_PEDIDOS]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  StoredProcedure [dbo].[SP_LISTAR_PEDIDOS]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -211,7 +227,7 @@ BEGIN
     WHERE (@NRO_PEDIDO IS NULL OR CAB.NRO_PEDIDO  LIKE '%' + @NRO_PEDIDO + '%' )
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[SP_LISTAR_PRODUCTOS]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  StoredProcedure [dbo].[SP_LISTAR_PRODUCTOS]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -227,7 +243,7 @@ BEGIN
       AND (@NOMBRE IS NULL OR NOMBRE LIKE '%' + @NOMBRE + '%');
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[SP_LISTAR_USUARIOS]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  StoredProcedure [dbo].[SP_LISTAR_USUARIOS]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -239,7 +255,7 @@ as
 
 select * from USUARIOS where (ID_ROL = @ID_ROL OR @ID_ROL = 0)
 GO
-/****** Object:  StoredProcedure [dbo].[USP_INS_PEDIDO_CAB]    Script Date: 6/01/2024 21:58:38 ******/
+/****** Object:  StoredProcedure [dbo].[USP_INS_PEDIDO_CAB]    Script Date: 7/01/2024 00:57:05 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -307,6 +323,50 @@ END
 
 
 set @ID_RESULT = @ID_PEDIDO
+GO
+/****** Object:  StoredProcedure [dbo].[USP_INS_PEDIDO_DET]    Script Date: 7/01/2024 00:57:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[USP_INS_PEDIDO_DET]  
+@ACCION INT,  
+@ID_PRODUCTO INT = 0,  
+@ID_PEDIDO INT ,  
+@ID_PEDIDO_DET INT ,  
+@ID_RESULT iNT output  
+AS  
+  
+DECLARE @PRECIO DECIMAL(18,2)  
+  
+IF (@ACCION = 1)  
+BEGIN   
+  
+  SELECT @ID_PEDIDO_DET = ISNULL(MAX(ID_PEDIDO_DET), 0) + 1 FROM PEDIDOS_DET;  
+  SELECT @PRECIO = PRECIO FROM PRODUCTOS WHERE ID_PRODUCTO = @ID_PRODUCTO;  
+  
+  insert into PEDIDOS_DET values (@ID_PEDIDO_DET,@ID_PEDIDO,@ID_PRODUCTO,@PRECIO)  
+  
+  
+  
+END  
+  
+  
+IF (@ACCION = 2)  
+BEGIN   
+  
+ SELECT @ID_PEDIDO_DET  
+  
+END  
+  
+IF (@ACCION = 3)  
+BEGIN   
+  
+ DELETE FROM PEDIDOS_DET WHERE ID_PEDIDO_DET = @ID_PEDIDO_DET  
+  
+END  
+  
+set @ID_RESULT = @ID_PEDIDO_DET
 GO
 USE [master]
 GO
