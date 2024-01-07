@@ -23,6 +23,12 @@ namespace API_2
 		public List<ResponsePedido> ListadoPedido([FromBody] RequestPedido request)
 		{
 			return (PedidoNegocio.ListarProductos(request));
+		}	
+
+		[HttpPost("obtenerpedido")]
+		public List<ResponsePedido> ObtenerPedido([FromBody] RequestPedido request)
+		{
+			return (PedidoNegocio.ObtenerPedido(request));
 		}
 
 

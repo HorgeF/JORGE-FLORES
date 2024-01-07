@@ -42,6 +42,22 @@ namespace Negocio
 			return objRespuesta;
 		}
 
+        public static List<ResponsePedido> ObtenerPedido(RequestPedido request)
+        {
 
-	}
+            List<ResponsePedido> objRespuesta = new List<ResponsePedido>();
+
+            try
+            {
+                objRespuesta = PedidosDAO.GetPedido(request);
+            }
+            catch (Exception ex)
+            {
+                //objRespuesta.MensajeRespuesta = ex.ToString();
+            }
+            return objRespuesta;
+        }
+        
+
+    }
 }

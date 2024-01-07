@@ -4,12 +4,14 @@
     <div class="form-row">
 
 
-        <input type="text" class="form-control" id="txtestadoActual" hidden>
+        <input type="text" class="form-control" id="txtaccion" value="@ViewBag.accion" hidden>
+        <input type="text" class="form-control" id="txtid_pedido" value="@ViewBag.id_pedido" hidden>
+        <input type="text" class="form-control" id="txtestadoActual" val="0" hidden>
 
         <div class="form-group col-md-4">
             <label for="inputState">Estado</label>
             <select class="form-control" id="cboEstado" disabled>
-                <option value="1">Por Antender</option>
+                <option value="1">Por Atender</option>
                 <option value="2">En Proceso</option>
                 <option value="3">Delivery</option>
                 <option value="4">Recibido</option>
@@ -82,7 +84,12 @@
     const cboVendedor = $('#cboVendedor')
     const cboEstado = $('#cboEstado')
     const fechapedido = $('#txtfechapedido')
+    const fecharecepcion = $('#txtfecharecepcion')
+    const fechadespacho = $('#txtfechadespacho')
+    const fechadentrega = $('#txtfechaentrega')
     const estadoActual = $('#txtestadoActual')
+    const accion = $('#txtaccion')
+    const id_pedido = $('#txtid_pedido')
     const token = localStorage.getItem('token');
 
 
@@ -90,18 +97,88 @@
     fechapedido.val(fechaActual)
 
 
-    const nuevaCab = {
-        accion: 1,
-        fecha_pedido : "",
+    var nuevaCab = {
+        accion: parseInt(accion.val()),
+        id_pedido: parseInt(id_pedido.val()),
+        fecha: "",
         id_vendedor: cboVendedor.val(),
         id_estado: cboEstado.val(),
-        n_pedido : ""
+        n_pedido : "",
+        request: ""
     };
 
+    CargarDatos();
+
+
+    async function CargarDatos() {
+
+        if (accion.val() == "2") 
+        {
+    
+            cboEstado.prop("disabled", false);
+
+            const parametros = {
+                id_pedido: parseInt(id_pedido.val()),
+            };
+
+            try {
+                const response = await fetch("http://localhost:5085/Pedido/obtenerpedido", {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(parametros)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error en la solicitud: ${response.statusText}`);
+                }
+
+                const pedidos = await response.json();
+
+                if (pedidos.length > 0) {
+
+                    const pe = pedidos[0]; // Tomar el primer elemento de la lista
+
+                    console.log("0")
+                    fechapedido.val(pe.fecha_pedido);
+                    fecharecepcion.val(pe.fecha_recepcion);
+                    fechadespacho.val(pe.fecha_despacho);
+                    fechadentrega.val(pe.fecha_entrega);
+                    id_pedido.val(pe.id_pedido);
+                    estadoActual.val(pe.id_estado);
+                    cboEstado.val(pe.id_estado);
+
+                } else {
+                    console.log('No se encontraron pedidos');
+                }
+            } catch (ex) {
+                console.log(ex);
+            }
+
+        
+        }
+    
+    }
 
 
     async function guardar() {
+
+
         try {
+
+            if (accion.val() == "2") 
+            {
+
+                if (parseInt(estadoActual.val()) >= parseInt(nuevaCab.id_estado)) {
+                    alert("Estado inferior o igual al actual");
+                    return null;
+                }
+            
+            }
+
+
             const response = await fetch("http://localhost:5085/Pedido/insertpedido", {
                 method: 'POST',
                 headers: {
@@ -123,11 +200,17 @@
             window.location.href = url;
 
         } catch (ex) {
-            console.error(ex);
+            console.log(ex);
         }
+
+
     }
 
-    
+    cboEstado.on('change', async () => {
+        nuevaCab.id_estado = cboEstado.val();
+        console.log(nuevaCab.id_estado)
+    });
+
 
 
 

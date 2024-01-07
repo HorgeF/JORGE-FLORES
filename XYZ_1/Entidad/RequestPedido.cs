@@ -15,9 +15,11 @@ namespace Entidad
 		public string fecha_recepcion { get; set; } = string.Empty;
 		public string fecha_despacho { get; set; } = string.Empty;
 		public string fecha_entrega { get; set; } = string.Empty;
+		public string fecha { get; set; } = string.Empty;
 		public int id_vendedor { get; set; }
 		public string n_pedido { get; set; } = string.Empty;
 		public int id_estado { get; set; }
+		public int id_result { get; set; }
 
 	}
 }

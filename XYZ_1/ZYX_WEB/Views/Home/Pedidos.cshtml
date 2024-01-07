@@ -104,7 +104,7 @@
 				content += `
 									<tr>
 										<td>${index + 1}</td>
-														<td>${pe.nro_pedido}</td>
+															<td><a href="#" onclick="editarPedido(${pe.id_pedido})" >${pe.nro_pedido}</a></td>
 															<td>${pe.fecha_pedido}</td>
 															<td>${pe.fecha_recepcion}</td>
 															<td>${pe.fecha_despacho}</td>
@@ -133,14 +133,16 @@
 	});
 
 
-
+	function editarPedido(pedido) 
+	{
+		var url = '@Html.Raw(Url.Action("NuevoPedido", "Home", new { accion = "__id__", id_pedido = "__ic__" }))';
+		window.location.href = url.replace('__id__', 2).replace('__ic__', pedido);
+	}
 
 	buttonnuevo.on('click', async () => {
 
-
-		var url = '@Html.Raw(Url.Action("NuevoPedido", "Home"))';
-		window.location.href = url;
-
+		var url = '@Html.Raw(Url.Action("NuevoPedido", "Home", new { accion = "__id__", id_pedido = "__ic__"}))';
+		window.location.href = url.replace('__id__', 1).replace('__ic__', 0)
 
 	});
 

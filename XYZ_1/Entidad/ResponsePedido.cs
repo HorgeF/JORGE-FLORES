@@ -15,8 +15,9 @@ namespace Entidad
 		public string fecha_despacho { get; set; }
 		public string fecha_entrega { get; set; }
 		public string id_vendedor { get; set; }
-		public string id_estado { get; set; }
+		public int id_estado { get; set; }
 		public string estado { get; set; }
+		public string uni_medida { get; set; }
 
 		public string MensajeRespuesta { get; set; }
 		public string CodigoRespuesta { get; set; }

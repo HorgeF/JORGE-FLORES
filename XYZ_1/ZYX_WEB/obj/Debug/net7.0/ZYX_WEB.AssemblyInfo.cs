@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ZYX_WEB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+026f0b2075a1902b62b950019bfde2baa10a80b6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+607bc027f31efbe021631223e9cd831ba9de5848")]
 [assembly: System.Reflection.AssemblyProductAttribute("ZYX_WEB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ZYX_WEB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

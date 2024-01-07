@@ -32,9 +32,11 @@ namespace ZYX_WEB.Controllers
             return View();
         }
 
-		public IActionResult NuevoPedido()
+		public IActionResult NuevoPedido(int accion , int id_pedido)
 		{
-			return View();
+            ViewBag.accion = accion;
+            ViewBag.id_pedido = id_pedido;
+            return View();
 		}
 		public IActionResult Privacy()
         {
