@@ -43,8 +43,34 @@ namespace Datos
 		}
 
 
+        public static ResponsePedido InsertPedidoDet(RequestPedido request)
+        {
+            Database objDB = Data.CnGeneral;
 
-		public static List<ResponsePedido> listarPedido(RequestPedido request)
+            DbCommand objCMD = objDB.GetStoredProcCommand("USP_INS_PEDIDO_DET");
+
+            objDB.AddInParameter(objCMD, "@ACCION", DbType.Int32, request.accion);
+            objDB.AddInParameter(objCMD, "@ID_PRODUCTO", DbType.Int32, request.id_producto);
+            objDB.AddInParameter(objCMD, "@ID_PEDIDO", DbType.Int32, request.id_pedido);
+            objDB.AddInParameter(objCMD, "@ID_PEDIDO_DET", DbType.Int32, request.id_pedido_det);
+            objDB.AddOutParameter(objCMD, "@ID_RESULT", DbType.Int32, request.id_result);
+
+
+
+            objDB.ExecuteNonQuery(objCMD);
+
+            var idPedido = Int32.Parse(objDB.GetParameterValue(objCMD, "@ID_RESULT").ToString() ?? "0");
+
+            var lst = new ResponsePedido();
+            if (idPedido > 0)
+                lst.MensajeRespuesta = "Proceso correctamente.";
+            lst.CodigoRespuesta = "001";
+
+            return lst;
+
+        }
+
+        public static List<ResponsePedido> listarPedido(RequestPedido request)
 		{
 			Database objDB = Data.CnGeneral;
 			DbCommand objCMD = objDB.GetStoredProcCommand("SP_LISTAR_PEDIDOS");
@@ -115,6 +141,39 @@ namespace Datos
 
         }
 
+
+        public static List<ResponsePedido> GetPedidoDet(RequestPedido request)
+        {
+            Database objDB = Data.CnGeneral;
+            DbCommand objCMD = objDB.GetStoredProcCommand("SP_GET_PEDIDOS_DET");
+            objDB.AddInParameter(objCMD, "@ID_PEDIDO", DbType.Int32, request.id_pedido);
+
+
+            var lst = new List<ResponsePedido>();
+
+
+            using (IDataReader dr = objDB.ExecuteReader(objCMD))
+            {
+                while (dr.Read())
+                {
+                    var entidad = new ResponsePedido();
+                    entidad.id_pedido = Convert.ToInt32(Data.reader(dr, "id_pedido"));
+                    entidad.id_pedido_det = Convert.ToInt32(Data.reader(dr, "id_pedido_det"));
+                    entidad.nombre = Convert.ToString(Data.reader(dr, "nombre"));
+                    entidad.sku = Convert.ToString(Data.reader(dr, "sku"));
+                    entidad.tipo = Convert.ToString(Data.reader(dr, "tipo"));
+                    entidad.precio = Convert.ToDecimal(Data.reader(dr, "precio"));
+                    entidad.fecha_entrega = Convert.ToString(Data.reader(dr, "fecha_entrega"));
+                    entidad.uni_medida = Convert.ToString(Data.reader(dr, "uni_medida"));
+
+
+                    lst.Add(entidad);
+                }
+            }
+
+            return lst;
+
+        }
 
 
     }

@@ -33,6 +33,32 @@
 
 
 
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalDetalle" >
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<div class="col-md-12">
+				<table id="tblpedidodet" class="table table-striped" style="width:100%">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Sku</th>
+							<th>Nombre</th>
+							<th>Tipo</th>
+							<th>Precio</th>
+							<th>Unidad Medida</th>
+						</tr>
+					</thead>
+					<tbody id="tblpedidodetbody">
+					</tbody>
+				</table>
+
+			</div>
+
+
+		</div>
+	</div>
+</div>
 
 
 
@@ -50,6 +76,7 @@
 	const token = localStorage.getItem('token');
 	const buttonnuevo = $('#btnNuevo')
 	const NroPedido = $('#txtNroPedido')
+	const modalDetalle = $('#modalDetalle')
 
 	const dataTableOptions = {
 		destroy: true,
@@ -112,8 +139,7 @@
 															<td>${pe.estado}</td>
 										<td><i class="fa-solid fa-check" style="color: green;"></i></td>
 										<td>
-											<button class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></button>
-											<button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+												   <button onclick="detallePedido(${pe.id_pedido})" class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></button>
 										</td>
 									</tr>`;
 			});
@@ -131,6 +157,60 @@
 	window.addEventListener("load", async () => {
 		await initDataTable();
 	});
+
+	function detallePedido(id_pedidox) 
+	{
+		CargarDetalle(id_pedidox);
+		modalDetalle.modal("show");
+	}
+
+
+	async function CargarDetalle(id_pedidox) {
+
+		var parametros = {
+			id_pedido: parseInt(id_pedidox),
+		};
+
+		try {
+
+			const response = await fetch("http://localhost:5085/Pedido/obtenerpedidodet", {
+				method: 'POST',
+				headers: {
+					'Authorization': `Bearer ${token}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(parametros)
+			});
+
+			if (!response.ok) {
+				throw new Error(`Error en la solicitud: ${response.statusText}`);
+			}
+
+			const productos = await response.json();
+
+			let content = ``;
+			productos.forEach((pro, index) => {
+				content += `
+										<tr>
+											<td>${index + 1}</td>
+												<td>${pro.sku}</td>
+												<td>${pro.nombre}</td>
+													<td>${pro.tipo}</td>
+													<td>${pro.precio}</td>
+													<td>${pro.uni_medida}</td>
+										</tr>`;
+			});
+
+
+			$('#tblpedidodetbody').html(content);
+
+
+
+		} catch (ex) {
+			console.log(ex);
+		}
+
+	}
 
 
 	function editarPedido(pedido) 

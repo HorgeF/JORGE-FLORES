@@ -1,14 +1,14 @@
 ﻿<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 <form>
-    <div class="form-row">
+    <div class="row">
 
 
         <input type="text" class="form-control" id="txtaccion" value="@ViewBag.accion" hidden>
         <input type="text" class="form-control" id="txtid_pedido" value="@ViewBag.id_pedido" hidden>
         <input type="text" class="form-control" id="txtestadoActual" val="0" hidden>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4">
             <label for="inputState">Estado</label>
             <select class="form-control" id="cboEstado" disabled>
                 <option value="1">Por Atender</option>
@@ -19,7 +19,7 @@
         </div>
 
 
-        <div class="form-group col-md-6">
+        <div class="col-md-4">
             <label for="inputEmail4">Fecha Pedido</label>
             <div class="input-group date" data-provide="datepicker" >
                 <input type="text" class="form-control" id="txtfechapedido" disabled >
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="col-md-4">
             <label for="inputEmail4">Fecha recepcion</label>
             <div class="input-group date" data-provide="datepicker" >
                 <input type="text" class="form-control" id="txtfecharecepcion" disabled>
@@ -40,7 +40,7 @@
         </div>
 
 
-        <div class="form-group col-md-6">
+        <div class="col-md-4">
             <label for="inputEmail4">Fecha despacho</label>
             <div class="input-group date" data-provide="datepicker" >
                 <input type="text" class="form-control" id="txtfechadespacho" disabled>
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="col-md-4">
             <label for="inputEmail4">Fecha Entrega</label>
             <div class="input-group date" data-provide="datepicker" >
                 <input type="text" class="form-control" id="txtfechaentrega" disabled>
@@ -60,15 +60,53 @@
             </div>
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="col-md-4">
             <label for="inputState">Vendedor</label>
             <select class="form-control" id="cboVendedor">
                 <option value="1">Vendedor 1</option>
             </select>
         </div>
 
+        <br />
+
+        <div class="col-md-10">
+            <label for="inputState">Producto</label>
+            <select class="form-control" id="cboProductos">
+            </select>
+        </div>
+
+        <div class="col-md-2" style="padding-top:2%">
+            <button type="button" class="btn btn-primary" id="btnGuardarDet" onclick="guardarDet(1,0)" disabled>Agregar</button>
+        </div>
+
+        <div class="col-md-12" style="padding-top:2%">
+
+        </div>
+
+        <div class="col-md-12">
+            <table id="tblpedidodet" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Sku</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Precio</th>
+                        <th>Unidad Medida</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tblpedidodetbody">
+                </tbody>
+            </table>
+
+        </div>
 
     </div>
+
+    <div class="col-md-12" style="padding-top:2%">
+    </div>
+    <hr />
 
     <button type="button" class="btn btn-primary" id="btnGuardarCab" onclick="guardar()">Guardar</button>
     <button type="button" class="btn btn-secundary"  onclick="location.href='@Url.Action("Pedidos", "Home")'">Regresar</button>
@@ -81,7 +119,9 @@
 <script>
 
     const btnGuardarCab = $('#btnGuardarCab')
+    const btnGuardarDet = $('#btnGuardarDet')
     const cboVendedor = $('#cboVendedor')
+    const cboProductos = $('#cboProductos')
     const cboEstado = $('#cboEstado')
     const fechapedido = $('#txtfechapedido')
     const fecharecepcion = $('#txtfecharecepcion')
@@ -107,8 +147,9 @@
         request: ""
     };
 
-    CargarDatos();
 
+    CargarDatos();
+    CargarProductos();
 
     async function CargarDatos() {
 
@@ -116,6 +157,7 @@
         {
     
             cboEstado.prop("disabled", false);
+            btnGuardarDet.prop("disabled", false);
 
             const parametros = {
                 id_pedido: parseInt(id_pedido.val()),
@@ -141,7 +183,6 @@
 
                     const pe = pedidos[0]; // Tomar el primer elemento de la lista
 
-                    console.log("0")
                     fechapedido.val(pe.fecha_pedido);
                     fecharecepcion.val(pe.fecha_recepcion);
                     fechadespacho.val(pe.fecha_despacho);
@@ -157,9 +198,98 @@
                 console.log(ex);
             }
 
+            CargarDetalle();
         
         }
     
+    }
+
+
+    async function CargarProductos() {
+
+            var parametros = {
+                sku: "",
+                nombre: ""
+            };
+
+            try {
+
+                const response = await fetch("http://localhost:5085/Producto/listarproductos", {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(parametros)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error en la solicitud: ${response.statusText}`);
+                }
+
+                const productos = await response.json();
+
+                productos.forEach((pro, index) => {
+
+                $(cboProductos).append($("<option></option>").attr("value", pro.id_producto).text(pro.nombre));
+
+                });
+
+            } catch (ex) {
+                console.log(ex);
+            }    
+
+    }
+
+
+    async function CargarDetalle() {
+
+        var parametros = {
+            id_pedido: parseInt(id_pedido.val()),
+        };
+
+        try {
+
+            const response = await fetch("http://localhost:5085/Pedido/obtenerpedidodet", {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(parametros)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.statusText}`);
+            }
+
+            const productos = await response.json();
+
+            let content = ``;
+            productos.forEach((pro, index) => {
+                content += `
+                                    <tr>
+                                        <td>${index + 1}</td>
+                                            <td>${pro.sku}</td>
+                                            <td>${pro.nombre}</td>
+                                                <td>${pro.tipo}</td>
+                                                <td>${pro.precio}</td>
+                                                <td>${pro.uni_medida}</td>
+                                        <td>
+                                              <button  onclick="eliminarDetalle(${pro.id_pedido_det})" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                                        </td>
+                                    </tr>`;
+            });
+
+
+            $('#tblpedidodetbody').html(content);
+
+
+
+        } catch (ex) {
+            console.log(ex);
+        }
+
     }
 
 
@@ -206,14 +336,54 @@
 
     }
 
+    async function guardarDet(accionx, id_pedido_detx) {
+
+        var parametros = {
+            accion: accionx,
+            id_pedido: parseInt(id_pedido.val()),
+            id_producto: cboProductos.val(),
+            id_pedido_det: id_pedido_detx
+        };
+
+        try {
+
+            const response = await fetch("http://localhost:5085/Pedido/insertpedidodet", {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(parametros)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error en la solicitud: ${response.statusText}. Detalles: ${JSON.stringify(errorData)}`);
+            }
+
+            const pedidos = await response.json();
+            console.log(pedidos);
+
+            var url = '@Html.Raw(Url.Action("NuevoPedido", "Home", new { accion = "__id__", id_pedido = "__ic__" }))';
+            window.location.href = url.replace('__id__', 2).replace('__ic__', parseInt(id_pedido.val()));
+
+        } catch (ex) {
+            console.log(ex);
+        }
+
+
+    }
+
+    function eliminarDetalle(id_pedido_det) 
+    {
+        guardarDet(3, id_pedido_det);
+    }
+
+
     cboEstado.on('change', async () => {
         nuevaCab.id_estado = cboEstado.val();
         console.log(nuevaCab.id_estado)
     });
-
-
-
-
 
 
 </script>

@@ -20,6 +20,9 @@ namespace Entidad
 		public string n_pedido { get; set; } = string.Empty;
 		public int id_estado { get; set; }
 		public int id_result { get; set; }
+		public decimal precio { get; set; }
+		public int id_pedido_det { get; set; }
+		public int id_producto { get; set; }
 
 	}
 }

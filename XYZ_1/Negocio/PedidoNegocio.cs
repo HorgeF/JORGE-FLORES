@@ -26,7 +26,23 @@ namespace Negocio
 		}
 
 
-		public static List<ResponsePedido> ListarProductos(RequestPedido request)
+        public static ResponsePedido insert_PedidoDet(RequestPedido request)
+        {
+
+            ResponsePedido objRespuesta = new ResponsePedido();
+            try
+            {
+                objRespuesta = PedidosDAO.InsertPedidoDet(request);
+            }
+            catch (Exception ex)
+            {
+                objRespuesta.MensajeRespuesta = ex.ToString();
+            }
+            return objRespuesta;
+        }
+
+
+        public static List<ResponsePedido> ListarPedido(RequestPedido request)
 		{
 
 			List<ResponsePedido> objRespuesta = new List<ResponsePedido>();
@@ -41,6 +57,8 @@ namespace Negocio
 			}
 			return objRespuesta;
 		}
+
+ 
 
         public static List<ResponsePedido> ObtenerPedido(RequestPedido request)
         {
@@ -57,7 +75,23 @@ namespace Negocio
             }
             return objRespuesta;
         }
-        
+
+        public static List<ResponsePedido> ObtenerPedido_det(RequestPedido request)
+        {
+
+            List<ResponsePedido> objRespuesta = new List<ResponsePedido>();
+
+            try
+            {
+                objRespuesta = PedidosDAO.GetPedidoDet(request);
+            }
+            catch (Exception ex)
+            {
+                //objRespuesta.MensajeRespuesta = ex.ToString();
+            }
+            return objRespuesta;
+        }
+
 
     }
 }
